@@ -15,11 +15,24 @@ namespace WindowsFormsEnumHelyes
         {
             this.BedNaam = naam;
             this.BtwNum = btwNumm;
-            werkNemList = new List<Werknemers>();
+            
         }
         public override string ToString()
         {
             return BedNaam;
+        }
+        public virtual string BedInfo()
+        {
+            return $"Btw nummer: {BtwNum}";
+        }
+        public  void WerkNemersAdd(Werknemers newWerknemers)
+        {
+            
+            werkNemList.Add(newWerknemers);
+        }
+        public void VerwijderWerknemer(int index)
+        {
+            werkNemList.RemoveAt(index);
         }
     }
 }

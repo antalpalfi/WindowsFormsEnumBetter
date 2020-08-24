@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.Remoting;
+using System.Threading;
 
 namespace WindowsFormsEnumHelyes
 {
     public partial class Form1 : Form
     {
-        List<Bedrijf> bedrijList = new List<Bedrijf>();
+        List<Bedrijf> bedrijfList = new List<Bedrijf>();
         List<Werknemers> werkNemersList = new List<Werknemers>();
         public Form1()
         {
@@ -30,20 +31,38 @@ namespace WindowsFormsEnumHelyes
             werkNemersList.Add(frank);
             werkNemersList.Add(daniel);
             werkNemersList.Add(sofia);
-            //Werknemers werknem1 = new Werknemers("Antal");
-            //Werknemers werknem2 = new Werknemers("Klaudia");
-            //Werknemers werknem3 = new Werknemers("Johnny");
-            //Werknemers werknem4 = new Werknemers("Gregory");
-            //Werknemers werknem5 = new Werknemers("Patricia");
-            //Werknemers werknem6 = new Werknemers("Adam");
-            //Werknemers werknem7 = new Werknemers("Joshep");
-            //Werknemers werknem8 = new Werknemers("Raul");
-            //Werknemers werknem9 = new Werknemers("Piroska");
-            cmbNaam.DataSource = null;
-            cmbNaam.DataSource = werkNemersList;
+            Werknemers werknem1 = new Werknemers("Antal",new Salarys());
+            Werknemers werknem2 = new Werknemers("Klaudia",new Salarys());
+            Werknemers werknem3 = new Werknemers("Johnny",new Salarys());
+            Werknemers werknem4 = new Werknemers("Gregory",new Salarys());
+            Werknemers werknem5 = new Werknemers("Patricia", new Salarys());
+            Werknemers werknem6 = new Werknemers("Adam", new Salarys());
+            Werknemers werknem7 = new Werknemers("Joshep", new Salarys());
+           
+            //cmbNaam.DataSource = null;
+            //cmbNaam.DataSource = werkNemersList;
 
-            //Bedrijf Antalnv = new Bedrijf("Antal Nv.", BtwNummerRandom());
-            //Antalnv.
+            Bedrijf Antalnv = new Bedrijf("Antal Nv.", BtwNummerRandom());
+            Thread.Sleep(50);
+            Bedrijf PalfiAuto = new Bedrijf("Palfi Auto Bt.", BtwNummerRandom());
+            Thread.Sleep(50);
+            Bedrijf Szabo = new Bedrijf("Szabo Kft.", BtwNummerRandom());
+            bedrijfList.Add(Antalnv);
+            bedrijfList.Add(PalfiAuto);
+            bedrijfList.Add(Szabo);
+
+
+            Antalnv.WerkNemersAdd(werknem1);
+            Antalnv.WerkNemersAdd(werknem2);
+            Antalnv.WerkNemersAdd(werknem3);
+            PalfiAuto.WerkNemersAdd(werknem4);
+            PalfiAuto.WerkNemersAdd(werknem5);
+            PalfiAuto.WerkNemersAdd(werknem6);
+            Szabo.WerkNemersAdd(new Werknemers("Tamas", new Salarys()));
+            Szabo.WerkNemersAdd(werknem7);
+            Szabo.WerkNemersAdd(new Werknemers("Piroska", new Salarys()));
+            cmbBedrijf.DataSource = bedrijfList;
+
         }
         public string BtwNummerRandom()
         {
@@ -65,6 +84,17 @@ namespace WindowsFormsEnumHelyes
                 
                 labelNaamInfo.Text = (cmbNaam.SelectedItem as Werknemers).Beschrijft();
                 lblNettoBrutto.Text = (cmbNaam.SelectedItem as Werknemers).Salarys.Money();
+            }
+        }
+
+        private void cmbBedrijf_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbBedrijf.DataSource!=null)
+            {
+
+                cmbNaam.DataSource = (cmbBedrijf.SelectedValue as Bedrijf).werkNemList;
+                cmbBedrijf.DataSource = bedrijfList;
+                labelBedrijf.Text = (cmbNaam.SelectedItem as Bedrijf).BedInfo();
             }
         }
     }
